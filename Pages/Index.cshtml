@@ -1,0 +1,70 @@
+﻿@page
+@model VersiyonTakip.Pages.IndexModel
+
+@{
+    ViewData["Title"] = "Versiyon Takip";
+}
+
+<h1>Versiyon Takip</h1>
+
+<p>GitHub'da yayımlanan uygulama sürümleri</p>
+
+@if (Model.ErrorMessage is not null)
+{
+    <div class="alert alert-danger">
+        @Model.ErrorMessage
+    </div>
+}
+else if (Model.Releases.Count == 0)
+{
+    <div class="alert alert-info">
+        Henüz yayımlanmış bir sürüm bulunamadı.
+    </div>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Versiyon</th>
+                <th>Başlık</th>
+                <th>Yayın Tarihi</th>
+                <th>Açıklama</th>
+                <th>Bağlantı</th>
+                <th>İndir</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var release in Model.Releases)
+            {
+                <tr>
+                    <td>@release.TagName</td>
+                    <td>@release.Name</td>
+                    <td>
+                        @(release.PublishedAt?
+                            .ToLocalTime()
+                            .ToString("dd.MM.yyyy HH:mm") ?? "-")
+                    </td>
+                    <td>
+                        <div style="white-space: pre-line">
+                            @release.Body
+                        </div>
+                    </td>
+                    <td>
+                        <a href="@release.HtmlUrl"
+                           target="_blank"
+                           rel="noopener noreferrer">
+                            GitHub'da aç
+                        </a>
+                    </td>
+                    <td>
+                        <a href="@release.ZipballUrl">
+                            Kaynak kodu indir (.zip)
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
