@@ -9,6 +9,37 @@
 
 <p>GitHub'da yayımlanan uygulama sürümleri</p>
 
+@if (Model.LatestRelease is not null)
+{
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <h2>En Son Sürüm</h2>
+
+            <h3>@Model.LatestRelease.TagName</h3>
+
+            <p>@Model.LatestRelease.Name</p>
+
+            <p>
+                @(string.IsNullOrWhiteSpace(Model.LatestRelease.Body)
+                    ? "Açıklama girilmemiş."
+                    : Model.LatestRelease.Body)
+            </p>
+
+            <a class="btn btn-primary"
+               href="@Model.LatestRelease.ZipballUrl">
+                Kaynak Kodunu İndir
+            </a>
+
+            <a class="btn btn-outline-secondary"
+               href="@Model.LatestRelease.HtmlUrl"
+               target="_blank"
+               rel="noopener noreferrer">
+                GitHub Release
+            </a>
+        </div>
+    </div>
+}
+
 @if (Model.ErrorMessage is not null)
 {
     <div class="alert alert-danger">
