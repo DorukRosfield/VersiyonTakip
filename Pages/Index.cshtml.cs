@@ -1,10 +1,8 @@
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
+using Microsoft.AspNetCore.Http;
 using System.Text.Json;
-using System.Threading.Tasks;
+using System.Linq;
 using VersiyonTakip.Models;
 using VersiyonTakip.Services;
 
@@ -14,40 +12,44 @@ public class IndexModel : PageModel
 {
     private readonly GitHubReleaseService _releaseService;
 
-    public List<GitHubReleases> Releases { get; private set; } = new();
+    public List<GitHubReleases> Releases { get; set; } = new();
 
-    public GitHubReleases? LatestRelease { get; private set; }
+    public GitHubReleases? LatestRelease { get; set; }
 
-    public string? ErrorMessage { get; private set; }
+    public string? ErrorMessage { get; set; }
 
     public IndexModel(GitHubReleaseService releaseService)
     {
         _releaseService = releaseService;
     }
 
-    public async Task OnGetAsync()
+    public async Task<IActionResult> OnGetAsync()
     {
+        // Kullanıcı giriş yapmış mı kontrol et
+        if (HttpContext.Session.GetString("UserName") == null)
+        {
+            return RedirectToPage("/Login");
+        }
+
         try
         {
-            // 1. GitHub'dan sürümleri çek
             Releases = await _releaseService.GetReleasesAsync();
 
-            // 2. Sürümleri yayın tarihine göre sırala
             Releases = Releases
-                .OrderByDescending(r =>
-                    r.PublishedAt ?? DateTimeOffset.MinValue)
+                .OrderByDescending(x => x.PublishedAt)
                 .ToList();
 
-            // 3. En son sürümü belirle
             LatestRelease = Releases.FirstOrDefault();
         }
         catch (HttpRequestException)
         {
-            ErrorMessage = "GitHub'a bağlanılamadı.";
+            ErrorMessage = "GitHub bağlantısı başarısız!";
         }
         catch (JsonException)
         {
-            ErrorMessage = "GitHub'dan gelen veriler okunamadı.";
+            ErrorMessage = "GitHub verileri okunamadı!";
         }
+
+        return Page();
     }
 }

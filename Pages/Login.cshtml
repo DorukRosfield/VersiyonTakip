@@ -1,0 +1,23 @@
+﻿@page
+@model VersiyonTakip.Pages.LoginModel
+
+<h1>VersiyonTakip</h1>
+
+<h3>Giriş Yap</h3>
+
+<form method="post">
+
+    <label>Kullanıcı Adı:</label>
+
+    <input asp-for="UserName" />
+
+    <button type="submit">Giriş Yap</button>
+
+</form>
+
+@if (Model.ErrorMessage != null)
+{
+    <p style="color:red">
+        @Model.ErrorMessage
+    </p>
+}
