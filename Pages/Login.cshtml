@@ -2,39 +2,22 @@
 @model VersiyonTakip.Pages.LoginModel
 
 <h1>VersiyonTakip</h1>
+
 <h3>Giriş Yap</h3>
 
 <form method="post">
+
     <label>Kullanıcı Adı:</label>
 
-    <div id="userNameBox"
-         contenteditable="true"
-         style="width:250px;
-        height:35px;
-        border:1px solid gray;
-        padding:6px;
-        box-sizing:border-box;
-        white-space:nowrap;
-        overflow:visible;">
-    </div>
-
-    <input type="hidden" asp-for="UserName" id="UserName" />
-
-    <br /><br />
+    <input asp-for="UserName" />
 
     <button type="submit">Giriş Yap</button>
+
 </form>
 
 @if (Model.ErrorMessage != null)
 {
-    <p style="color:red">@Model.ErrorMessage</p>
+    <p style="color:red">
+        @Model.ErrorMessage
+    </p>
 }
-
-<script>
-    const textBox = document.getElementById("userNameBox");
-    const hiddenInput = document.getElementById("UserName");
-
-    textBox.addEventListener("input", function () {
-        hiddenInput.value = textBox.textContent;
-    });
-</script>
