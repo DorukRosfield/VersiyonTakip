@@ -1,23 +1,82 @@
 ﻿@page
 @model VersiyonTakip.Pages.LoginModel
 
-<h1>VersiyonTakip</h1>
-
-<h3>Giriş Yap</h3>
-
-<form method="post">
-
-    <label>Kullanıcı Adı:</label>
-
-    <input asp-for="UserName" />
-
-    <button type="submit">Giriş Yap</button>
-
-</form>
-
-@if (Model.ErrorMessage != null)
-{
-    <p style="color:red">
-        @Model.ErrorMessage
-    </p>
+@{
+    ViewData["Title"] = "Giriş Yap";
 }
+
+<style>
+    body {
+        background-color: #121212;
+        color: #f1f1f1;
+    }
+
+    .login-card {
+        background-color: #242424;
+        border: 1px solid #383838;
+        border-radius: 12px;
+        padding: 30px;
+        max-width: 400px;
+        margin: 70px auto;
+    }
+
+    h1, h3, label {
+        color: #f1f1f1;
+    }
+
+    .form-control {
+        background-color: #303030;
+        color: white;
+        border: 1px solid #555;
+    }
+
+        .form-control:focus {
+            background-color: #303030;
+            color: white;
+            border-color: #6c55d9;
+            box-shadow: 0 0 0 0.2rem rgba(108, 85, 217, 0.25);
+        }
+
+    .btn-primary {
+        background-color: #6c55d9;
+        border-color: #6c55d9;
+        width: 100%;
+    }
+
+        .btn-primary:hover {
+            background-color: #5540b5;
+            border-color: #5540b5;
+        }
+
+    .error-message {
+        color: #ff7777;
+    }
+</style>
+
+<div class="login-card">
+    <h1>VersiyonTakip</h1>
+    <h3>Giriş Yap</h3>
+
+    <form method="post">
+        <div class="mb-3">
+            <label class="form-label">Kullanıcı Adı:</label>
+            <input asp-for="UserName" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Şifre:</label>
+            <input asp-for="Password" type="password" class="form-control" />
+        </div>
+
+        <button type="submit" class="btn btn-primary">
+            Giriş Yap
+        </button>
+    </form>
+
+    @if (Model.ErrorMessage != null)
+    {
+        <p class="error-message mt-3">
+            @Model.ErrorMessage
+        </p>
+    }
+</div>
